@@ -53,4 +53,12 @@ public class FacultyController {
         }
         return ResponseEntity.ok(Collections.emptyList());
     }
+
+    @GetMapping(value = "/findByNameOrColorIgnoreCase")
+    public ResponseEntity<Collection<Faculty>> findByNameOrColorIgnoreCase(@RequestParam(required = false) String string) {
+        if (string != null && !string.isBlank()) {
+            return ResponseEntity.ok(facultyService.findByNameOrColorIgnoreCase(string, string));
+        }
+        return ResponseEntity.ok(Collections.emptyList());
+    }
 }

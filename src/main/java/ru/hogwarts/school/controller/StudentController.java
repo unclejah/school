@@ -53,4 +53,13 @@ public class StudentController {
         }
         return ResponseEntity.ok(Collections.emptyList());
     }
+
+    @GetMapping(value = "/findStudentsBetweenAge")
+    public ResponseEntity<Collection<Student>> findStudentsBetweenAge(@RequestParam int min,
+                                                                      @RequestParam int max) {
+        if (min > 0 && max>0 && max >min) {
+            return ResponseEntity.ok(studentService.findByAgeBetween(min, max));
+        }
+        return ResponseEntity.ok(Collections.emptyList());
+    }
 }
