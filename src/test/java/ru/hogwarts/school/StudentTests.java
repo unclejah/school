@@ -17,15 +17,17 @@ import ru.hogwarts.school.repository.AvatarRepository;
 import ru.hogwarts.school.repository.StudentRepository;
 import ru.hogwarts.school.service.StudentService;
 
+import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-@WebMvcTest
+@WebMvcTest(controllers = StudentController.class)
 public class StudentTests {
 
     @Autowired
@@ -40,8 +42,6 @@ public class StudentTests {
     @SpyBean
     private StudentService studentService;
 
-    @InjectMocks
-    private StudentController studentController;
 
     @Test
     public void testStudents() throws Exception {
@@ -49,16 +49,20 @@ public class StudentTests {
         final int age = 21;
         final long id = 1;
 
-        Student student = new Student(id, name, age);
+//        Student student = new Student(id, name, age);
+        Student student = new Student();
+        student.setId(id);
+        student.setName(name);
+        student.setAge(age);
 
         JSONObject studentObject = new JSONObject();
-        studentObject.put("id", id);
+//        studentObject.put("id", id);
         studentObject.put("name", name);
         studentObject.put("age", age);
 
 
         when(studentRepository.save(any(Student.class))).thenReturn(student);
-      //  when(studentRepository.findAllByAge(eq(age))).thenReturn(Collections.singleton(student));
+        when(studentRepository.findByAge(eq(age))).thenReturn(Collections.singleton(student));
         when(studentRepository.findById(eq(id))).thenReturn(Optional.of(student));
 
         mockMvc.perform(MockMvcRequestBuilders
@@ -90,7 +94,7 @@ public class StudentTests {
                 .andExpect(jsonPath("$.age").value(age));
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/student?age" + age)
+                        .get("/student?age=" + age)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(id))
