@@ -13,7 +13,7 @@ import java.util.Collections;
 @RestController
 @RequestMapping("/faculty")
 public class FacultyController {
-    @Autowired
+
     private final FacultyService facultyService;
 
     public FacultyController(FacultyService facultyService) {
