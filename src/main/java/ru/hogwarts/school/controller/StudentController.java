@@ -107,4 +107,18 @@ public class StudentController {
             is.transferTo(os);
         }
     }
+    @GetMapping("/amount")
+    public int getStudentsAmount() {
+        return studentService.getStudentsAmount();
+    }
+
+    @GetMapping("/averageAge")
+    public double getAverageAge() {
+        return studentService.getAverageAge();
+    }
+
+    @GetMapping("/lastFiveStudents")
+    public Collection<Student> getFiveLastStudents() {
+        return studentService.getFiveLastStudents();
+    }
 }
