@@ -85,4 +85,16 @@ public class StudentService {
     private String getExtension(String fileName) {
         return fileName.substring(fileName.lastIndexOf(".") + 1);
     }
+
+    public int getStudentsAmount() {
+        return studentRepository.getStudentsAmount();
+    }
+
+    public double getAverageAge() {
+        return studentRepository.getAverageAge();
+    }
+
+    public Collection<Student> getFiveLastStudents() {
+        return  studentRepository.getFiveLastStudents();
+    }
 }
