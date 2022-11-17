@@ -14,14 +14,14 @@ import java.util.List;
 @Transactional
 public class AvatarService {
     private final AvatarRepository avatarRepository;
-    private Logger logger = LoggerFactory.getLogger(AvatarService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AvatarService.class);
 
     public AvatarService(AvatarRepository avatarRepository) {
         this.avatarRepository = avatarRepository;
-        logger.info("AvatarService is loaded");
+        LOGGER.info("AvatarService is loaded");
     }
     public List<Avatar> findAll(int number, int size) {
-        logger.info("Get all avatars paged by page {} and size {}", number, size);
+        LOGGER.info("Get all avatars paged by page {} and size {}", number, size);
         return avatarRepository.findAll(PageRequest.of(number - 1, size)).getContent();
     }
 }
