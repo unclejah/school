@@ -135,4 +135,15 @@ public class StudentController {
             return ResponseEntity.badRequest().build();
         }
     }
+    @GetMapping("/printStudentNames")
+    public ResponseEntity printStudentNames() {
+        studentService.printStudentNames();
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/printStudentNamesSynchronized")
+    public ResponseEntity printStudentNamesSynchronized() {
+        studentService.printStudentNamesSynchronized();
+        return ResponseEntity.ok().build();
+    }
 }
