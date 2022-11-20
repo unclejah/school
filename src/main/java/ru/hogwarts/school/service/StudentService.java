@@ -130,5 +130,76 @@ public class StudentService {
                 .mapToDouble(a -> a.getAge())
                 .average().orElseThrow();
     }
+    public void printStudentNames() {
+        final Collection<String> list = studentRepository.findAll().stream()
+                .map(a -> a.getName())
+                .collect(Collectors.toList());
 
+        System.out.println("List: ");
+        for(String s : list) {
+            System.out.println("\t" + s);
+        }
+
+        Runnable main = () -> {
+            System.out.println(list.toArray()[0]);
+            System.out.println(list.toArray()[1]);
+        };
+
+        Thread thread1 = new Thread(() -> {
+            System.out.println(list.toArray()[2]);
+            System.out.println(list.toArray()[3]);
+        });
+
+        Thread thread2 = new Thread(() -> {
+            System.out.println(list.toArray()[4]);
+            System.out.println(list.toArray()[5]);
+        });
+
+        main.run();
+        thread1.start();
+        thread2.start();
+    }
+
+    public void printStudentNamesSynchronized() {
+        Runnable main = () -> {
+            synchronized(studentRepository) {
+                printStudentName(0);
+                printStudentName(1);
+            }
+        };
+
+        Thread thread1 = new Thread(() -> {
+            synchronized(studentRepository) {
+                printStudentName(2);
+                printStudentName(3);
+            }
+        });
+
+        Thread thread2 = new Thread(() -> {
+            synchronized(studentRepository) {
+                printStudentName(4);
+                printStudentName(5);
+            }
+        });
+
+        main.run();
+        thread1.start();
+        thread2.start();
+    }
+
+    private void printStudentName(long index) {
+
+        long st_index = -1;
+        for(Student student : studentRepository.findAll()) {
+            if(++st_index == index) {
+                st_index = student.getId();
+                break;
+            }
+        }
+
+        System.out.println(studentRepository
+                .findById(st_index)
+                .get()
+                .getName());
+    }
 }
