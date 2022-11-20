@@ -121,4 +121,18 @@ public class StudentController {
     public Collection<Student> getFiveLastStudents() {
         return studentService.getFiveLastStudents();
     }
+
+    @GetMapping("/getStudentsWithNameStartsA")
+    public ResponseEntity getStudentsWithNameStartsA() {
+        return ResponseEntity.ok(studentService.getStudentsWithNameStartsA());
+    }
+
+    @GetMapping("/getAverageAgeByStream")
+    public ResponseEntity getAverageAgeByStream() {
+        try {
+            return ResponseEntity.ok(studentService.getAverageAgeByStream());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
 }

@@ -14,6 +14,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
@@ -110,4 +111,24 @@ public class StudentService {
         LOGGER.info("Get five last students");
         return  studentRepository.getFiveLastStudents();
     }
+
+    public Collection<Student> getAllStudents() {
+        LOGGER.info("Get all students");
+        return studentRepository.findAll();
+    }
+
+    public Collection<String> getStudentsWithNameStartsA() {
+        return studentRepository.findAll().stream()
+                .map(a -> a.getName().toUpperCase())
+                .filter(a -> a.startsWith("A"))
+                .sorted()
+                .collect(Collectors.toList());
+    }
+
+    public double getAverageAgeByStream() {
+        return studentRepository.findAll().stream()
+                .mapToDouble(a -> a.getAge())
+                .average().orElseThrow();
+    }
+
 }
